@@ -24,7 +24,7 @@ The client is a simple application that connects to the server to send requests 
 3. **Compiling and Running the Client:**
    - Navigate to the client directory (`cd client`).
    - Compile the client using `javac Main.java`.
-   - Run the client using `java Client`.
+   - Run the client using `java Main`.
 
 ## Contributions
 We welcome contributions and improvements. Feel free to open issues and pull requests to suggest new features, fix bugs, or improve documentation.
