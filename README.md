@@ -4,7 +4,7 @@
 This project has been created with the goal of providing a practical foundation for understanding the dynamics of client-server communication in Java. The project focuses on using basic Java knowledge without the use of external frameworks, offering a practical application to enhance Java programming skills.
 
 ## Project Contents
-The project consists of two main components: the server and the client.
+The project consists of two main components: the server and the client
 
 ### Server
 The server is responsible for handling requests from clients and interacting with the database. Server goals include:
