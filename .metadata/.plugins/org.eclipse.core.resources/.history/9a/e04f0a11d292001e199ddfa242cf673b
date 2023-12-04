@@ -1,0 +1,17 @@
+package counter_demo;
+
+public class User {
+	private User[] friends;
+	private Counter counter;
+	private String username;
+	public User(String username, int count) {
+		this.username = username;
+		this.counter = new Counter(count);
+	}
+	public int getCount() {
+		return counter.getCount();
+	}
+	public String getUsername() {
+		return username;
+	}
+}

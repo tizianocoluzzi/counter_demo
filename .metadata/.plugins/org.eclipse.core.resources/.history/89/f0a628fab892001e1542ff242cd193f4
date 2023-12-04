@@ -1,0 +1,45 @@
+package counter_demo;
+
+import java.awt.*;
+
+import javax.swing.*;
+
+public class Gui extends JFrame{
+	JButton plus;
+	JButton minus;
+	JTextField count;
+	JTextField username;
+	JLabel lusername;
+	JButton connect;
+	JButton disconnect;
+	JPanel north;
+	JPanel center;
+	Listener l;
+	public Gui() {
+		l = new Listener(this);
+		plus = new JButton("-");
+		minus = new JButton("+");
+		count = new JTextField();
+		center = new JPanel();
+		center.setLayout(new FlowLayout());
+		center.add(plus);
+		center.add(count);
+		center.add(minus);
+		username = new JTextField();
+		lusername = new JLabel("username:");
+		connect = new JButton("connect");
+		disconnect = new JButton("disconnect");
+		north = new JPanel();
+		north.setLayout(new FlowLayout());
+		north.add(disconnect);
+		north.add(connect);
+		north.add(username);
+		north.add(lusername);
+		this.add(north, BorderLayout.NORTH);
+		this.add(center ,BorderLayout.CENTER);
+		this.pack();
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setVisible(true);
+		
+	}
+}

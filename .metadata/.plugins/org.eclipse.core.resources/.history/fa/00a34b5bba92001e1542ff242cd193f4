@@ -1,0 +1,53 @@
+package counter_demo;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+import java.util.logging.Logger;
+
+public class Listener implements ActionListener{
+	Gui g;
+	Socket s;
+	Logger log;
+	PrintWriter scrivi;
+	Scanner leggi;
+	Listener(Gui g){
+		this.g = g;
+		log = Logger.getLogger("main thread");
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("connect")) {
+			log.info("premuto connect");
+			try {
+				s = new Socket("localhost", 4000);
+				
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		if(e.getActionCommand().equals("login")) {
+			scrivi = new PrintWriter(s.getOutputStream());
+			scrivi.println("USERNAME:" + g.username.getText());
+		}
+		if(e.getActionCommand().equals("disconnect")) {
+			
+		}
+		if(e.getActionCommand().equals("plus")) {
+			
+		}
+		if(e.getActionCommand().equals("minus")) {
+			
+		}
+		
+	}
+
+}

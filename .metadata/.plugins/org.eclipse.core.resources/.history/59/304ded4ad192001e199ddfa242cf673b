@@ -1,0 +1,11 @@
+package counter_demo;
+
+public class Counter {
+	private int count;
+	public Counter(int count) {
+		this.count = count;
+	}
+	public void setCount(int c) {
+		
+	}
+}

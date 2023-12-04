@@ -1,0 +1,27 @@
+package counter_demo;
+
+import java.awt.*;
+
+import javax.swing.*;
+
+public class Gui extends JFrame{
+	JButton plus;
+	JButton minus;
+	JTextField count;
+	JTextField username;
+	JLabel lusername;
+	JButton connect;
+	JButton disconnect;
+	JPanel north;
+	JPanel center;
+	public Gui() {
+		plus = new JButton("-");
+		minus = new JButton("+");
+		count = new JTextField();
+		center = new JPanel();
+		center.setLayout(new FlowLayout());
+		center.add(minus);
+		center.add(plus);
+		center.add(count);
+	}
+}
