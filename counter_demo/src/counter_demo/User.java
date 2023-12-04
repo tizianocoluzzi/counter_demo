@@ -12,6 +12,12 @@ public class User {
 		this.username = username;
 		this.counter = new Counter();
 	}
+	public void incCounter() {
+		counter.incCount();
+	}
+	public void decCounter() {
+		counter.decCount();
+	}
 	public int getCount() {
 		return counter.getCount();
 	}

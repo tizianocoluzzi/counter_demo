@@ -18,8 +18,8 @@ public class Gui extends JFrame{
 	Listener l;
 	public Gui() {
 		l = new Listener(this);
-		plus = new JButton("-");
-		minus = new JButton("+");
+		plus = new JButton("+");
+		minus = new JButton("-");
 		count = new JTextField(5);
 		count.setEditable(false);
 		center = new JPanel();
@@ -32,14 +32,16 @@ public class Gui extends JFrame{
 		login = new JButton("login");
 		
 		login.addActionListener(l);
+		plus.setActionCommand("plus");
+		minus.setActionCommand("minus");
 		plus.addActionListener(l);
 		minus.addActionListener(l);
 		connect.addActionListener(l);
 		disconnect.addActionListener(l);
 		
-		center.add(plus);
-		center.add(count);
 		center.add(minus);
+		center.add(count);
+		center.add(plus);
 		north = new JPanel();
 		north.setLayout(new FlowLayout());
 		north.add(lusername);

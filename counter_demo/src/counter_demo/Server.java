@@ -6,8 +6,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Logger;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 class Run implements Runnable{
 	public Logger log;
@@ -41,16 +45,15 @@ class Run implements Runnable{
 				String[] msg = ricevuto.split(":");
 				if(msg[0].equals("USERNAME")) {
 					log.info("ricevuto un username" );
-					user = findUser(msg[1], f);
+					user = findUser(msg[1]);
 					
-					if(this.findUser(msg[1], f) != null) {
+					if(this.findUser(msg[1]) != null) {
 						log.info("utente trovato");
 					}
 					else {
 						user = createUser(msg[1]);
 						scriviFile = new PrintWriter(f);
-						scriviFile.println(msg[1] + ":" + "0");
-						scriviFile.flush();
+						scriviFile.append(msg[1] + ":" + "0");
 						log.info("scritto username");
 					}
 					scrivi.println("UPDATE:" + user.getCount());
@@ -63,25 +66,34 @@ class Run implements Runnable{
 				}
 				else if(msg[0].equals("PLUS")) {
 					log.info("ricevuto plus");
+					editUser(user, "" + (user.getCount() + 1), "" + user.getCount());
+					user.incCounter();
+					scrivi.println("UPDATE:" + user.getCount());
+					scrivi.flush();
 				}
 				else if(msg[0].equals("MINUS")) {
 					log.info("ricevuto minus");
+					editUser(user, "" + (user.getCount() - 1), "" + user.getCount());
+					user.decCounter();
+					scrivi.println("UPDATE:" + user.getCount());
+					scrivi.flush();
 				}
 				else {
 					log.info("errore");
 				}
+				
 			}
+			log.info("uscito dal while");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	private User findUser(String username, File f){
-		File file = f;
+	private User findUser(String username){
 		log.info("entro nel FindUser");
 		try {
-			log.info(file.toString());
-			Scanner data = new Scanner(file);
+			log.info(f.toString());
+			Scanner data = new Scanner(f);
 			String s;
 			while(data.hasNextLine()) {
 				s = data.nextLine();
@@ -108,7 +120,27 @@ class Run implements Runnable{
 	private User createUser(String username) {
 		return new User(username);
 	}
-	
+	private void editUser(User user, String count, String actCount) {
+		FileReader fr;
+		try {
+			fr = new FileReader(f);
+			BufferedReader br = new BufferedReader(fr);
+			FileWriter fw = new FileWriter(f);
+			BufferedWriter bw = new BufferedWriter(fw);
+			String str;
+			while((str = br.readLine()) != null) {
+				if(str.contains(user.getUsername() + ":" + actCount)){
+					str.replace(user.getUsername() + ":" + actCount, user.getUsername() + ":" + count);
+				}
+				br.close();
+				bw.write(str, 0, str.length());
+				bw.close();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 
 public class Server {

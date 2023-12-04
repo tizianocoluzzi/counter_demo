@@ -88,6 +88,8 @@ public class Listener implements ActionListener{
 		}
 		if(e.getActionCommand().equals("disconnect")) {
 			try {
+				scrivi.println("INTERRUPT");
+				scrivi.flush();
 				s.close();
 				log.info("connessione chiusa");
 				g.init();
@@ -96,10 +98,14 @@ public class Listener implements ActionListener{
 			}
 		}
 		if(e.getActionCommand().equals("plus")) {
-			scrivi.println("PLUS");
+			log.info("premuto plus");
+			scrivi.println("PLUS:1");
+			scrivi.flush();
 		}
 		if(e.getActionCommand().equals("minus")) {
-			scrivi.println("MINUS");
+			log.info("premuto minus");
+			scrivi.println("MINUS:1");
+			scrivi.flush();
 		}
 		
 	}
