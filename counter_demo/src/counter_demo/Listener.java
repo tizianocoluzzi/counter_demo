@@ -37,8 +37,7 @@ class Runner implements Runnable{
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.warning(e.getMessage());
 		}
 	}
 	
@@ -58,6 +57,7 @@ public class Listener implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//TODO rimuovere il comando connect e rendere la connessione automatica (brutale)
 		if(e.getActionCommand().equals("connect")) {
 			log.info("premuto connect");
 			try {
@@ -65,11 +65,9 @@ public class Listener implements ActionListener{
 				g.connected();
 				
 			} catch (UnknownHostException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				log.warning(e1.getMessage());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				log.warning(e1.getMessage());
 			}
 		}
 		if(e.getActionCommand().equals("login")) {
@@ -82,10 +80,10 @@ public class Listener implements ActionListener{
 				t = new Thread(r);
 				t.start();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				log.warning(e1.getMessage());
 			}
 		}
+		//TODO modificare il logout e non disconnettere dal server
 		if(e.getActionCommand().equals("disconnect")) {
 			try {
 				scrivi.println("INTERRUPT");

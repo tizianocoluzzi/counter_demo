@@ -1,8 +1,0 @@
-package counter_demo;
-
-public class User {
-	private User[] friends;
-	private Counter counter;
-	private String username;
-	
-}

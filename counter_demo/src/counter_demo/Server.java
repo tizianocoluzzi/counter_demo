@@ -52,6 +52,7 @@ class Run implements Runnable{
 					}
 					else {
 						user = createUser(msg[1]);
+						//TODO cambiare tutto cio che viene gestito del file in una classe file manager
 						scriviFile = new PrintWriter(new FileWriter(f, true));
 						scriviFile.println(msg[1] + ":" + "0");
 						scriviFile.flush();
@@ -65,6 +66,7 @@ class Run implements Runnable{
 					log.info("ricevuto interrupt");
 					socket.close();
 				}
+				//TODO aggiornare come vengono svolti i metodi plus e minus
 				else if(msg[0].equals("PLUS")) {
 					log.info("ricevuto plus");
 					editUser(user, "" + (user.getCount() + 1), "" + user.getCount());
@@ -86,8 +88,7 @@ class Run implements Runnable{
 			}
 			log.info("uscito dal while");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.warning(e.getMessage());
 		}
 	}
 	private User findUser(String username){
@@ -181,8 +182,7 @@ public class Server {
 			
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.warning(e.getMessage());
 		}
 	}
 	
