@@ -52,8 +52,9 @@ class Run implements Runnable{
 					}
 					else {
 						user = createUser(msg[1]);
-						scriviFile = new PrintWriter(f);
-						scriviFile.append(msg[1] + ":" + "0");
+						scriviFile = new PrintWriter(new FileWriter(f, true));
+						scriviFile.println(msg[1] + ":" + "0");
+						scriviFile.flush();
 						log.info("scritto username");
 					}
 					scrivi.println("UPDATE:" + user.getCount());
@@ -93,7 +94,7 @@ class Run implements Runnable{
 		log.info("entro nel FindUser");
 		try {
 			log.info(f.toString());
-			Scanner data = new Scanner(f);
+			Scanner data = new Scanner(this.f);
 			String s;
 			while(data.hasNextLine()) {
 				s = data.nextLine();
@@ -103,6 +104,7 @@ class Run implements Runnable{
 					return new User(username, Integer.parseInt(str[1]));
 				}
 			}
+			data.close();
 			return null;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -121,24 +123,33 @@ class Run implements Runnable{
 		return new User(username);
 	}
 	private void editUser(User user, String count, String actCount) {
-		FileReader fr;
+		
+		Scanner fr;
+		log.info("chiamata funzione editUser");
 		try {
-			fr = new FileReader(f);
-			BufferedReader br = new BufferedReader(fr);
-			FileWriter fw = new FileWriter(f);
-			BufferedWriter bw = new BufferedWriter(fw);
+			fr = new Scanner(this.f);
 			String str;
-			while((str = br.readLine()) != null) {
+			String tot = "";
+			while(fr.hasNextLine()) {
+				str = fr.nextLine();
+				log.info("stringa in letttura attuale: " + str );
 				if(str.contains(user.getUsername() + ":" + actCount)){
-					str.replace(user.getUsername() + ":" + actCount, user.getUsername() + ":" + count);
+					log.info("trovata stringa da replace");
+					str = user.getUsername() + ":" + count;
 				}
-				br.close();
-				bw.write(str, 0, str.length());
-				bw.close();
+				tot = tot + str + "\n";
+				log.info("tot attuale: " + tot);
 			}
+			tot = tot.substring(0, tot.length() - 1);
+			log.info("uscito dal file di modifica");
+			//lo apro dopo l'immagazzinamento delle info
+			PrintWriter pw = new PrintWriter(new FileWriter(f));
+			pw.println(tot);
+			pw.flush();
+			pw.close();
+			fr.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.severe(e.getMessage());
 		}
 	}
 }
