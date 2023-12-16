@@ -80,7 +80,6 @@ class Run implements Runnable{
 					user.decCounter();
 					scrivi.println("UPDATE:" + user.getCount());
 					scrivi.flush();
-					
 				}
 				else {
 					log.info("errore");

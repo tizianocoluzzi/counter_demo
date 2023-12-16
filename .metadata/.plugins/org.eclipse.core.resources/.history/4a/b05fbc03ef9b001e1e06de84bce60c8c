@@ -83,12 +83,4 @@ public class Gui extends JFrame{
 		minus.setEnabled(true);
 		count.setForeground(Color.black);
 	}
-	public void zero_state() {
-		connect.setEnabled(false);
-		disconnect.setEnabled(true);
-		login.setEnabled(false);
-		plus.setEnabled(true);
-		minus.setEnabled(false);
-		count.setForeground(Color.black);
-	}
 }

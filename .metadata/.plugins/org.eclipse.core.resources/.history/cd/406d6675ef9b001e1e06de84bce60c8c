@@ -33,13 +33,15 @@ class Runner implements Runnable{
 				if(msg[0].equals("UPDATE")) {
 					g.count.setEnabled(true);
 					g.count.setText(msg[1]);
-					if(msg[1].equals("0")) {
+					if(msg[1] == 0) {
 						g.zero_state();
 					}
-					else {
-						g.logged();
-					}
-					
+					g.logged();
+				}
+				else if(msg[0].equals("ZERO")) {
+					g.count.setEnabled(true);
+					g.count.setText(msg[1]);
+					g.zero_state();
 				}
 			}
 		} catch (IOException e) {

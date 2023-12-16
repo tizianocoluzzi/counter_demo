@@ -1,2 +1,3 @@
-marco:5
-luigi:0
+marco:0
+luigi:-1
+gioele:1

@@ -75,11 +75,19 @@ class Run implements Runnable{
 					scrivi.flush();
 				}
 				else if(msg[0].equals("MINUS")) {
-					log.info("ricevuto minus");
-					editUser(user, "" + (user.getCount() - 1), "" + user.getCount());
-					user.decCounter();
-					scrivi.println("UPDATE:" + user.getCount());
-					scrivi.flush();
+					if(user.getCount() == 1) {
+						log.info("non si puo diminuire");
+						user.decCounter();
+						scrivi.println("ZERO:0");
+						scrivi.flush();
+					}
+					else {
+						log.info("ricevuto minus");
+						editUser(user, "" + (user.getCount() - 1), "" + user.getCount());
+						user.decCounter();
+						scrivi.println("UPDATE:" + user.getCount());
+						scrivi.flush();
+					}
 					
 				}
 				else {
