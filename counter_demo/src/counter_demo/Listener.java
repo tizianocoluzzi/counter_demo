@@ -60,10 +60,11 @@ public class Listener implements ActionListener{
 	Listener(Gui g){
 		this.g = g;
 		log = Logger.getLogger("main thread");
+		tryConnect();
+		
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//TODO rimuovere il comando connect e rendere la connessione automatica (brutale)
 		if(e.getActionCommand().equals("connect")) {
 			log.info("premuto connect");
 			try {
@@ -71,8 +72,10 @@ public class Listener implements ActionListener{
 				g.connected();
 				
 			} catch (UnknownHostException e1) {
+				g.init();
 				log.warning(e1.getMessage());
 			} catch (IOException e1) {
+				g.init();
 				log.warning(e1.getMessage());
 			}
 		}
@@ -90,16 +93,12 @@ public class Listener implements ActionListener{
 			}
 		}
 		//TODO modificare il logout e non disconnettere dal server
-		if(e.getActionCommand().equals("disconnect")) {
-			try {
-				scrivi.println("INTERRUPT");
-				scrivi.flush();
-				s.close();
-				log.info("connessione chiusa");
-				g.init();
-			} catch (IOException e1) {
-				log.info("problemi con la chiusura della connessione");
-			}
+		if(e.getActionCommand().equals("logout")) {
+			scrivi.println("LOGOUT");
+			scrivi.flush();
+			log.info("logged out");
+			g.connected();
+			
 		}
 		if(e.getActionCommand().equals("plus")) {
 			log.info("premuto plus");
@@ -112,6 +111,30 @@ public class Listener implements ActionListener{
 			scrivi.flush();
 		}
 		
+	}
+	public void tryConnect() {
+		int counter = 0;
+		try {
+			s = new Socket("localhost", 4000);
+			log.info("connesso");
+			g.connected();
+		}
+		catch(Exception e) {
+			log.info("non connesso");
+			counter++;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			if(counter >= 20) {
+				log.severe("connessione fallita");
+			}
+			else {
+				tryConnect();
+			}
+		}
 	}
 
 }

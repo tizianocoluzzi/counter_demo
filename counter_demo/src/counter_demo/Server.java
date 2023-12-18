@@ -62,9 +62,8 @@ class Run implements Runnable{
 					scrivi.flush();
 					log.info("inviato UPDATE");
 				}
-				else if(msg[0].equals("INTERRUPT")) {
-					log.info("ricevuto interrupt");
-					socket.close();
+				else if(msg[0].equals("LOGOUT")) {
+					user = null;
 				}
 				//TODO aggiornare come vengono svolti i metodi plus e minus
 				else if(msg[0].equals("PLUS")) {

@@ -17,7 +17,7 @@ public class Gui extends JFrame{
 	JPanel center;
 	Listener l;
 	public Gui() {
-		l = new Listener(this);
+		
 		plus = new JButton("+");
 		minus = new JButton("-");
 		count = new JTextField(5);
@@ -28,16 +28,8 @@ public class Gui extends JFrame{
 		username = new JTextField(15);
 		lusername = new JLabel("username:");
 		connect = new JButton("connect");
-		disconnect = new JButton("disconnect");
+		disconnect = new JButton("logout");
 		login = new JButton("login");
-		
-		login.addActionListener(l);
-		plus.setActionCommand("plus");
-		minus.setActionCommand("minus");
-		plus.addActionListener(l);
-		minus.addActionListener(l);
-		connect.addActionListener(l);
-		disconnect.addActionListener(l);
 		
 		center.add(minus);
 		center.add(count);
@@ -46,7 +38,7 @@ public class Gui extends JFrame{
 		north.setLayout(new FlowLayout());
 		north.add(lusername);
 		north.add(username);
-		north.add(connect);
+		//north.add(connect);
 		north.add(login);
 		north.add(disconnect);
 		
@@ -58,9 +50,19 @@ public class Gui extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 		
+		l = new Listener(this);
+		
+		login.addActionListener(l);
+		plus.setActionCommand("plus");
+		minus.setActionCommand("minus");
+		plus.addActionListener(l);
+		minus.addActionListener(l);
+		connect.addActionListener(l);
+		disconnect.addActionListener(l);
+		
 	}
 	public void init() {
-		connect.setEnabled(true);
+		//connect.setEnabled(true);
 		disconnect.setEnabled(false);
 		login.setEnabled(false);
 		plus.setEnabled(false);
@@ -68,7 +70,8 @@ public class Gui extends JFrame{
 		count.setForeground(Color.gray);
 	}
 	public void connected() {
-		connect.setEnabled(false);
+		System.out.println("chiamata connected");
+		//connect.setEnabled(false);
 		disconnect.setEnabled(true);
 		login.setEnabled(true);
 		plus.setEnabled(false);
@@ -76,7 +79,7 @@ public class Gui extends JFrame{
 		count.setForeground(Color.gray);
 	}
 	public void logged() {
-		connect.setEnabled(false);
+		//connect.setEnabled(false);
 		disconnect.setEnabled(true);
 		login.setEnabled(false);
 		plus.setEnabled(true);
@@ -84,7 +87,7 @@ public class Gui extends JFrame{
 		count.setForeground(Color.black);
 	}
 	public void zero_state() {
-		connect.setEnabled(false);
+		//connect.setEnabled(false);
 		disconnect.setEnabled(true);
 		login.setEnabled(false);
 		plus.setEnabled(true);
