@@ -2,3 +2,7 @@ marco:4
 luigi:-1
 gioele:1
 eben:2
+alessia:2
+aldo:23
+mario:4
+alfonso:6
