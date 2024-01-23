@@ -92,7 +92,6 @@ public class Listener implements ActionListener{
 				log.warning(e1.getMessage());
 			}
 		}
-		//TODO modificare il logout e non disconnettere dal server
 		if(e.getActionCommand().equals("logout")) {
 			scrivi.println("LOGOUT");
 			scrivi.flush();
