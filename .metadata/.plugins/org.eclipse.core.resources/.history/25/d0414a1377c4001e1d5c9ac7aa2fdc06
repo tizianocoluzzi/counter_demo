@@ -1,0 +1,31 @@
+package Gui;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class Visita extends JFrame{
+	private JLabel username;
+	private JTextField count;
+	private JLabel current;
+	private JLabel max;
+	private JTextField fmax;
+	private JTextField fcurrent;
+	private JButton back;
+	private JPanel north;
+	private JPanel south;
+	private JPanel center;
+	public Visita(Listener l) {
+		username = new JLabel();
+		count = new JTextField(5);
+		current = new JLabel("current");
+		max = new JLabel("max");
+		fmax = new JTextField(2);
+		fmax.setEnabled(false);
+		current = new JLabel();
+		fcurrent = new JTextField(2);
+		n
+	}
+
+}

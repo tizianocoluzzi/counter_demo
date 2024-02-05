@@ -9,6 +9,9 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 class Runner implements Runnable{
 	Gui g;
 	Listener l;
@@ -31,15 +34,17 @@ class Runner implements Runnable{
 				log.info(str);
 				String[] msg = str.split(":");
 				if(msg[0].equals("UPDATE")) {
-					g.count.setEnabled(true);
-					g.count.setText(msg[1]);
+					//g.count.setEnabled(true);
+					g.setCount(msg[1]);
 					if(msg[1].equals("0")) {
 						g.zero_state();
 					}
 					else {
 						g.logged();
 					}
-					
+				}
+				if(msg[0].equals("SEARCH")) {
+					g.visita(msg[1], msg[2]);
 				}
 			}
 		} catch (IOException e) {
@@ -57,14 +62,13 @@ public class Listener implements ActionListener{
 	Scanner leggi;
 	Runner r;
 	Thread t;
-	Listener(Gui g){
+	public Listener(Gui g){
 		this.g = g;
 		log = Logger.getLogger("main thread");
-		tryConnect();
-		
 	}
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public synchronized void actionPerformed(ActionEvent e) {
+		log.info(""+ e.paramString() );
 		if(e.getActionCommand().equals("connect")) {
 			log.info("premuto connect");
 			try {
@@ -83,7 +87,7 @@ public class Listener implements ActionListener{
 			log.info("premuto login");
 			try {
 				scrivi = new PrintWriter(s.getOutputStream());
-				scrivi.println("USERNAME:" + g.username.getText());
+				scrivi.println("USERNAME:" + g.getUsername());
 				scrivi.flush();
 				r = new Runner(this, g);
 				t = new Thread(r);
@@ -109,16 +113,27 @@ public class Listener implements ActionListener{
 			scrivi.println("MINUS:1");
 			scrivi.flush();
 		}
-		
+		if (e.getActionCommand().equals("back")) {
+			log.info("premuto back");
+			g.logged();
+		}
+		if(e.getActionCommand().equals("search")) {
+			log.info("premuto search");
+			scrivi.println("SEARCH:"+g.getMainPage().getVisitaUsername());
+			scrivi.flush();
+		}
 	}
+
+	private int counter = 0; //conta quante volte tenta la connessione
 	public void tryConnect() {
-		int counter = 0;
 		try {
 			s = new Socket("localhost", 4000);
 			log.info("connesso");
+			counter = 0; //reset counter
 			g.connected();
+			
 		}
-		catch(Exception e) {
+		catch(IOException e) {
 			log.info("non connesso");
 			counter++;
 			try {

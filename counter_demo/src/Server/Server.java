@@ -83,6 +83,13 @@ class Run implements Runnable{
 					scrivi.flush();
 					
 				}
+				else if(msg[0].equals("SEARCH")) {
+					log.info("ricevuto search");
+					User cercato = findUser(msg[1]);
+					scrivi.println("SEARCH:" + cercato.getUsername() + ":" + cercato.getCount());
+					scrivi.flush();
+				}
+				
 				else {
 					log.info("errore");
 				}
