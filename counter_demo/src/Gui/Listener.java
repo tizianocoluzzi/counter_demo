@@ -31,20 +31,25 @@ class Runner implements Runnable{
 			String str;
 			while(leggi.hasNextLine()) {
 				str = leggi.nextLine();
-				log.info(str);
+				log.info("ricevuto:" + str);
 				String[] msg = str.split(":");
 				if(msg[0].equals("UPDATE")) {
 					//g.count.setEnabled(true);
-					g.setCount(msg[1]);
-					if(msg[1].equals("0")) {
+					g.setCount(msg[2]);
+					g.setActScore(msg[3]);
+					g.setMaxScore(msg[4]);
+					if(msg[2].equals("0")) {
 						g.zero_state();
 					}
 					else {
 						g.logged();
 					}
 				}
-				if(msg[0].equals("SEARCH")) {
-					g.visita(msg[1], msg[2]);
+				else if(msg[0].equals("SEARCH")) {
+					g.visita(msg[1], msg[2], msg[3], msg[4]);
+				}
+				else {
+					log.severe("comando non riconosciuto:" + msg[0]);
 				}
 			}
 		} catch (IOException e) {
@@ -121,6 +126,18 @@ public class Listener implements ActionListener{
 			log.info("premuto search");
 			scrivi.println("SEARCH:"+g.getMainPage().getVisitaUsername());
 			scrivi.flush();
+		}
+		//TODO scrivere i blocchi dei menu
+		if(e.getActionCommand().equals("menu")) {
+			if(g.main.isOpen()) {
+				g.main.openMenu();
+			}
+			else {
+				g.main.closeMenu();
+			}
+		}
+		if(e.getActionCommand().equals("notify")) {
+			
 		}
 	}
 

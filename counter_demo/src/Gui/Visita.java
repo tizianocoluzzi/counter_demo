@@ -25,12 +25,13 @@ public class Visita extends JFrame{
 	public Visita(Listener l){
 		username = new JLabel();
 		count = new JTextField(5);
-		current = new JLabel("current");
-		max = new JLabel("max");
+		count.setEditable(false);
+		current = new JLabel("current:");
+		max = new JLabel("max:");
 		fmax = new JTextField(2);
-		fmax.setEnabled(false);
-		current = new JLabel();
+		fmax.setEditable(false);
 		fcurrent = new JTextField(2);
+		fcurrent.setEditable(false);
 		back = new JButton("<-");
 		back.setActionCommand("back");
 		north = new JPanel();
@@ -56,9 +57,11 @@ public class Visita extends JFrame{
 		
 		back.addActionListener(l);
 	}
-	public void visita(String u, String c) {
+	public void visita(String u, String c, String act, String m) {
 		username.setText(u);
 		count.setText(c);
+		fcurrent.setText(act);
+		fmax.setText(m);
 	}
 
 

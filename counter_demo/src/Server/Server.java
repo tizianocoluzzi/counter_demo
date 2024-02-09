@@ -57,11 +57,11 @@ class Run implements Runnable{
 						user = createUser(msg[1]);
 						//TODO cambiare tutto cio che viene gestito del file in una classe file manager
 						scriviFile = new PrintWriter(new FileWriter(f, true));
-						scriviFile.println(msg[1] + ":" + "0");
+						scriviFile.println(user.toString());
 						scriviFile.flush();
 						log.info("scritto username");
 					}
-					scrivi.println("UPDATE:" + user.getCount());
+					scrivi.println("UPDATE:" + user.toString());
 					scrivi.flush();
 					log.info("inviato UPDATE");
 				}
@@ -70,23 +70,24 @@ class Run implements Runnable{
 				}
 				else if(msg[0].equals("PLUS")) {
 					log.info("ricevuto plus");
-					editUser(user, "" + (user.getCount() + 1), "" + user.getCount());
 					user.incCounter();
-					scrivi.println("UPDATE:" + user.getCount());
+					editUser(user);
+					scrivi.println("UPDATE:" + user.toString());
 					scrivi.flush();
 				}
 				else if(msg[0].equals("MINUS")) {
 					log.info("ricevuto minus");
-					editUser(user, "" + (user.getCount() - 1), "" + user.getCount());
 					user.decCounter();
-					scrivi.println("UPDATE:" + user.getCount());
+					editUser(user);
+					//user.decCounter();
+					scrivi.println("UPDATE:" + user.toString());
 					scrivi.flush();
 					
 				}
 				else if(msg[0].equals("SEARCH")) {
 					log.info("ricevuto search");
 					User cercato = findUser(msg[1]);
-					scrivi.println("SEARCH:" + cercato.getUsername() + ":" + cercato.getCount());
+					scrivi.println("SEARCH:" + cercato.toString());
 					scrivi.flush();
 				}
 				
@@ -111,7 +112,10 @@ class Run implements Runnable{
 				log.info(s);
 				String[] str = s.split(":");
 				if(str[0].equals(username)) {
-					return new User(username, Integer.parseInt(str[1]));
+					if(str.length == 4) {
+						return new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]), str[4]);
+					}
+					return new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]));
 				}
 			}
 			data.close();
@@ -132,7 +136,7 @@ class Run implements Runnable{
 	private User createUser(String username) {
 		return new User(username);
 	}
-	private void editUser(User user, String count, String actCount) {
+	private void editUser(User user) {
 		
 		Scanner fr;
 		log.info("chiamata funzione editUser");
@@ -143,15 +147,15 @@ class Run implements Runnable{
 			while(fr.hasNextLine()) {
 				str = fr.nextLine();
 				log.info("stringa in letttura attuale: " + str );
-				if(str.contains(user.getUsername() + ":" + actCount)){
+				if(str.contains(user.getUsername())){
 					log.info("trovata stringa da replace");
-					str = user.getUsername() + ":" + count;
+					str = user.toString();
 				}
 				tot = tot + str + "\n";
 				log.info("tot attuale: " + tot);
 			}
-			tot = tot.substring(0, tot.length() - 1);
-			log.info("uscito dal file di modifica");
+			tot = tot.substring(0, tot.length() - 1);//per togliere l'ultimo \n
+			log.info("uscito dal file di modifica con tot:" + tot);
 			//lo apro dopo l'immagazzinamento delle info
 			PrintWriter pw = new PrintWriter(new FileWriter(f));
 			pw.println(tot);

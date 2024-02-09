@@ -54,6 +54,7 @@ class Login extends JFrame{
 		
 		this.l = l;
 		login.addActionListener(this.l);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	public void init() {
 		username.setText("");
