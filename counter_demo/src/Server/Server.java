@@ -22,23 +22,19 @@ class Run implements Runnable{
 	public Scanner leggi;
 	public ServerSocket server;
 	public Socket socket;
-	public File f;
-	public Scanner leggiFile;
-	public PrintWriter scriviFile; 
 	public User user;
+	private FileManager fileManager;
 	public Run(Socket socket) {
 		log = Logger.getLogger("thread");
 		this.socket = socket;
 		log.info("creato runner");
-		f = new File("./data.txt");
-		log.info(f.toString());
+		fileManager = new FileManager();
 		
 	}
 	@Override
 	public void run() {
 		log.info("connessione accettata");
 		try {
-			log.info(f.toString());
 			leggi = new Scanner(socket.getInputStream());
 			scrivi = new PrintWriter(socket.getOutputStream());
 			String ricevuto;
@@ -55,10 +51,6 @@ class Run implements Runnable{
 					}
 					else {
 						user = createUser(msg[1]);
-						//TODO cambiare tutto cio che viene gestito del file in una classe file manager
-						scriviFile = new PrintWriter(new FileWriter(f, true));
-						scriviFile.println(user.toString());
-						scriviFile.flush();
 						log.info("scritto username");
 					}
 					scrivi.println("UPDATE:" + user.toString());
@@ -102,70 +94,15 @@ class Run implements Runnable{
 		}
 	}
 	private User findUser(String username){
-		log.info("entro nel FindUser");
-		try {
-			log.info(f.toString());
-			Scanner data = new Scanner(this.f);
-			String s;
-			while(data.hasNextLine()) {
-				s = data.nextLine();
-				log.info(s);
-				String[] str = s.split(":");
-				if(str[0].equals(username)) {
-					if(str.length == 4) {
-						return new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]), str[4]);
-					}
-					return new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]));
-				}
-			}
-			data.close();
-			return null;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			log.severe("missing database");
-			try {
-				f.createNewFile();
-				return null;
-			} catch (IOException e1) {
-				log.severe("un macello col data");
-				return null;
-			}
-			
-		}
+		return fileManager.findUser(username);
 	}
-	private User createUser(String username) {
-		return new User(username);
+	private User createUser(String username) throws IOException {
+		return fileManager.createUser(username);
 	}
 	private void editUser(User user) {
-		
-		Scanner fr;
-		log.info("chiamata funzione editUser");
-		try {
-			fr = new Scanner(this.f);
-			String str;
-			String tot = "";
-			while(fr.hasNextLine()) {
-				str = fr.nextLine();
-				log.info("stringa in letttura attuale: " + str );
-				if(str.contains(user.getUsername())){
-					log.info("trovata stringa da replace");
-					str = user.toString();
-				}
-				tot = tot + str + "\n";
-				log.info("tot attuale: " + tot);
-			}
-			tot = tot.substring(0, tot.length() - 1);//per togliere l'ultimo \n
-			log.info("uscito dal file di modifica con tot:" + tot);
-			//lo apro dopo l'immagazzinamento delle info
-			PrintWriter pw = new PrintWriter(new FileWriter(f));
-			pw.println(tot);
-			pw.flush();
-			pw.close();
-			fr.close();
-		} catch (Exception e) {
-			log.severe(e.getMessage());
-		}
-	}
+		fileManager.editUser(user);
+
+	  }
 }
 
 public class Server {

@@ -12,7 +12,13 @@ public class Counter {
 		this.count = count;
 		this.actScore = actScore;
 		this.maxScore = maxScore;
-		this.lastCount = LocalDate.parse(lastCount);
+		if(lastCount == "") {
+			this.lastCount = LocalDate.now();
+		}
+		else {
+			this.lastCount = LocalDate.parse(lastCount);
+		}
+		
 	}
 	//alle brutte l'ultimo update è oggi di default
 	public Counter(int count, int actScore, int maxScore) {

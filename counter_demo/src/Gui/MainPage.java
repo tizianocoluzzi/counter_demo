@@ -39,6 +39,7 @@ public class MainPage extends JFrame {
 	private JLabel usernameLabel;
 	private boolean open;
 	//TODO da aggiungere tutta sta roba
+	private JPanel friendsPanel;
 	private JScrollPane scrollFriends;
 	private JButton[] friendList;
 	private String[] friendNames;
@@ -68,6 +69,8 @@ public class MainPage extends JFrame {
 		menu = new JButton("m");
 		notifyPanel = new JPanel();
 		menuPanel = new JPanel();
+		friendsPanel = new JPanel();
+		scrollFriends = new JScrollPane(friendsPanel);
 		menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -93,6 +96,7 @@ public class MainPage extends JFrame {
 		
 		menuPanel.add(menuLabel);
 		menuPanel.add(usernameLabel);
+		menuPanel.add(scrollFriends);
 		
 		this.init();
 		this.setSize(900, 400);
@@ -169,6 +173,10 @@ public class MainPage extends JFrame {
 	}
 	public void setMax(String a) {
 		fmax.setText(a);
+	}
+	
+	public void setFriendsNames(String friends) {
+		friendNames = friends.split("|");
 	}
 }
 
