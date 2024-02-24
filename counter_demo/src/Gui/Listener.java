@@ -38,6 +38,11 @@ class Runner implements Runnable{
 					g.setCount(msg[2]);
 					g.setActScore(msg[3]);
 					g.setMaxScore(msg[4]);
+					try {
+						g.setFriendsNames(msg[6].split("-"));
+					}catch(ArrayIndexOutOfBoundsException e2) {
+					}
+					
 					if(msg[2].equals("0")) {
 						g.zero_state();
 					}
@@ -124,8 +129,16 @@ public class Listener implements ActionListener{
 		}
 		if(e.getActionCommand().equals("search")) {
 			log.info("premuto search");
-			scrivi.println("SEARCH:"+g.getMainPage().getVisitaUsername());
-			scrivi.flush();
+			log.info(e.getSource().toString());
+			if(e.getSource().getClass().equals(JTextField.class)) {
+				scrivi.println("SEARCH:"+g.getMainPage().getVisitaUsername());
+				scrivi.flush();
+			}
+			else {
+				scrivi.println("SEARCH:"+e.getSource().toString().split(",")[25].split("=")[1]);
+				scrivi.flush();
+			}
+			
 		}
 		//TODO scrivere i blocchi dei menu
 		if(e.getActionCommand().equals("menu")) {

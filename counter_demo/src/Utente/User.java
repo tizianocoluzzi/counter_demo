@@ -40,10 +40,13 @@ public class User {
 	}
 	
 	public String toString() {
-		return username + ":" + counter.toString();
+		return username + ":" + counter.toString() + ":" + friends;
  	}
 	public String getFriends() {
 		return friends;
+	}
+	public void setFriends(String friends) {
+		this.friends = friends;
 	}
 	
 }

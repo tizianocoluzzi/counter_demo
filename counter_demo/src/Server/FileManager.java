@@ -1,4 +1,4 @@
-package Server;
+ package Server;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +19,7 @@ public class FileManager {
 		f = new File("./data.txt");
 	}
 	public User findUser(String username) {
+		User user = null;
 		try {
 			Scanner data = new Scanner(this.f);
 			String s;
@@ -27,13 +28,20 @@ public class FileManager {
 				String[] str = s.split(":");
 				if(str[0].equals(username)) {
 					if(str.length == 4) {
-						return new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]), str[4]);
+						user = new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]), str[4]);
 					}
-					return new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]));
+					else {
+						user = new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]));
+					}
+					try {
+						user.setFriends(str[5]);
+					}catch(IndexOutOfBoundsException e) {
+						user.setFriends("");
+					}
 				}
 			}
 			data.close();
-			return null;
+			return user;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			try {

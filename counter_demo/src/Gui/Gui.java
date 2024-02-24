@@ -82,4 +82,7 @@ public class Gui{
 	public MainPage getMainPage() {
 		return main;
 	}
+	public void setFriendsNames(String[] friendsList) {
+		main.createButtonFriends(friendsList);
+	}
 }

@@ -174,9 +174,20 @@ public class MainPage extends JFrame {
 	public void setMax(String a) {
 		fmax.setText(a);
 	}
-	
+	//non devo farlo qui ma direttamente nel listener perche della comunicazione non se ne occupa la GUI
 	public void setFriendsNames(String friends) {
 		friendNames = friends.split("|");
+	}
+	
+	public void createButtonFriends(String[] names) {
+		friendNames = names;
+		friendList = new JButton[friendNames.length];
+		for(int i = 0; i < friendNames.length; i++) {
+			friendList[i] = new JButton(friendNames[i]);
+			friendList[i].addActionListener(l);
+			friendList[i].setActionCommand("search");
+			friendsPanel.add(friendList[i]);
+		}
 	}
 }
 
