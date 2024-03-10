@@ -1,8 +1,14 @@
 package Utente;
 
 import Counter.Counter;
+//in realta non sto usando il tipo notifica perche sembra inutile
+import Notifiche.Notifica;
+import Notifiche.NotificaAmicizia;
+import Notifiche.NotificaCount;
 
 public class User {
+	private String notificheAmicizia;
+	private String notificheCount;
 	private String friends;
 	private Counter counter;
 	private String username;
@@ -40,7 +46,7 @@ public class User {
 	}
 	
 	public String toString() {
-		return username + ":" + counter.toString() + ":" + friends;
+		return username + ":" + counter.toString() + ":" + friends + ":" + getNotifiche();
  	}
 	public String getFriends() {
 		return friends;
@@ -48,5 +54,9 @@ public class User {
 	public void setFriends(String friends) {
 		this.friends = friends;
 	}
+	public String getNotifiche() {
+		return notificheAmicizia+notificheCount;
+	}
+	
 	
 }

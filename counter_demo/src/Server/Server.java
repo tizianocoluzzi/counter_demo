@@ -79,6 +79,7 @@ class Run implements Runnable{
 				else if(msg[0].equals("SEARCH")) {
 					log.info("ricevuto search");
 					User cercato = findUser(msg[1]);
+					log.info("utente cercato: " + msg[1] + cercato.toString());
 					scrivi.println("SEARCH:" + cercato.toString());
 					scrivi.flush();
 				}
@@ -101,8 +102,7 @@ class Run implements Runnable{
 	}
 	private void editUser(User user) {
 		fileManager.editUser(user);
-
-	  }
+	}
 }
 
 public class Server {

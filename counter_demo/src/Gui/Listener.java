@@ -135,8 +135,10 @@ public class Listener implements ActionListener{
 				scrivi.flush();
 			}
 			else {
-				scrivi.println("SEARCH:"+e.getSource().toString().split(",")[25].split("=")[1]);
-				scrivi.flush();
+				String username = e.getSource().toString().split(",")[25].split("=")[1];
+				if(username != "") {
+				scrivi.println("SEARCH:"+username);
+				scrivi.flush();}
 			}
 			
 		}

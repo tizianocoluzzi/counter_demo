@@ -44,6 +44,8 @@ public class MainPage extends JFrame {
 	private JButton[] friendList;
 	private String[] friendNames;
 	
+	private AmiciziaPanel[] amiciziaPanels;
+	private CountAmiciPanel[] countAmiciPanels;
 	private JPanel notifyPanel;
 	private JPanel mainPanel;
 	public MainPage(Listener l) {
@@ -67,7 +69,16 @@ public class MainPage extends JFrame {
 		fcurrent.setEnabled(false);
 		notify = new JButton("n");
 		menu = new JButton("m");
+		//creo una prova per il panel di amicizia
+		amiciziaPanels = new AmiciziaPanel[1];
+		amiciziaPanels[0] = new AmiciziaPanel("prova");	
+		countAmiciPanels = new CountAmiciPanel[1];
+		countAmiciPanels[0] = new CountAmiciPanel("prova");	
 		notifyPanel = new JPanel();
+		notifyPanel.setLayout(new BoxLayout(notifyPanel, BoxLayout.Y_AXIS));
+		notifyPanel.add(amiciziaPanels[0]);
+		notifyPanel.add(countAmiciPanels[0]);
+		
 		menuPanel = new JPanel();
 		friendsPanel = new JPanel();
 		scrollFriends = new JScrollPane(friendsPanel);
@@ -183,10 +194,12 @@ public class MainPage extends JFrame {
 		friendNames = names;
 		friendList = new JButton[friendNames.length];
 		for(int i = 0; i < friendNames.length; i++) {
-			friendList[i] = new JButton(friendNames[i]);
-			friendList[i].addActionListener(l);
-			friendList[i].setActionCommand("search");
-			friendsPanel.add(friendList[i]);
+			if(friendNames[i] != "") {
+				friendList[i] = new JButton(friendNames[i]);
+				friendList[i].addActionListener(l);
+				friendList[i].setActionCommand("search");
+				friendsPanel.add(friendList[i]);
+			}
 		}
 	}
 }

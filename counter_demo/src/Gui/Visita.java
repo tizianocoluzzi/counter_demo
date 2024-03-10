@@ -21,6 +21,7 @@ public class Visita extends JFrame{
 	private JPanel north;
 	private JPanel south;
 	private JPanel center;
+	private JButton amicizia;
 	private boolean premuto;
 	public Visita(Listener l){
 		username = new JLabel();
@@ -37,11 +38,14 @@ public class Visita extends JFrame{
 		north = new JPanel();
 		south = new JPanel();
 		center = new JPanel();
+		//center.setLayout(new BorderLayout());
 		premuto = false;
+		amicizia = new JButton("richiedi_amicizia");
 		
 		north.add(back);
 		north.add(username);
 		center.add(count);
+		center.add(amicizia, BorderLayout.SOUTH);
 		south.add(current);
 		south.add(fcurrent);
 		south.add(max);

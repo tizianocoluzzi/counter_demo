@@ -6,16 +6,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import Utente.User;
 
 //posso potenzialmente cambiare il modo di scrivere le informazione nel database 
 // e il tipo di database modificando solo ed esclusivamente questa classe 
 public class FileManager {
+	private Logger log;
 	private File f;
 	private Scanner leggiFile;
 	private PrintWriter scriviFile; 
 	public FileManager() {
+		log = Logger.getLogger("FileManager");
 		f = new File("./data.txt");
 	}
 	public User findUser(String username) {
@@ -34,6 +37,7 @@ public class FileManager {
 						user = new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]));
 					}
 					try {
+						log.info("aggiungo gli amici");
 						user.setFriends(str[5]);
 					}catch(IndexOutOfBoundsException e) {
 						user.setFriends("");
@@ -82,7 +86,7 @@ public class FileManager {
 			pw.close();
 			fr.close();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.warning(e.getMessage());
 		}
 	}
 }
