@@ -1,0 +1,202 @@
+package Gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+import java.util.logging.Logger;
+
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+class Runner implements Runnable{
+	Gui g;
+	Listener l;
+	Logger log;
+	Scanner leggi;
+	PrintWriter scrivi;
+	public Runner(Listener l, Gui g) {
+		log = Logger.getLogger("Thread Listener");
+		this.l = l;
+		this.g = g;
+	}
+	@Override
+	public void run() {
+		log.info("avviato thread listener client");
+		try {
+			leggi = new Scanner(l.s.getInputStream());
+			String str;
+			while(leggi.hasNextLine()) {
+				str = leggi.nextLine();
+				log.info("ricevuto:" + str);
+				String[] msg = str.split(":");
+				if(msg[0].equals("UPDATE")) {
+					//g.count.setEnabled(true);
+					g.setCount(msg[2]);
+					g.setActScore(msg[3]);
+					g.setMaxScore(msg[4]);
+					try {
+						g.setFriendsNames(msg[6].split("-"));
+					}catch(ArrayIndexOutOfBoundsException e2) {
+						//non fa nulla perche non ci sono amici
+					}
+					try {
+						g.setNotification(msg[7]);
+					}
+					catch(ArrayIndexOutOfBoundsException e){
+						//non fa nulla perche semplicemente non ci sono notifiche
+					}
+					
+					if(msg[2].equals("0")) {
+						g.zero_state();
+					}
+					else {
+						g.logged();
+					}
+				}
+				else if(msg[0].equals("SEARCH")) {
+					g.visita(msg[1], msg[2], msg[3], msg[4]);
+				}
+				else {
+					log.severe("comando non riconosciuto:" + msg[0]);
+				}
+			}
+		} catch (IOException e) {
+			log.warning(e.getMessage());
+		}
+	}
+	
+}
+
+public class Listener implements ActionListener{
+	String cercato;
+	Gui g;
+	Socket s;
+	Logger log;
+	PrintWriter scrivi;
+	Scanner leggi;
+	Runner r;
+	Thread t;
+	public Listener(Gui g){
+		this.g = g;
+		log = Logger.getLogger("main thread");
+	}
+	@Override
+	public synchronized void actionPerformed(ActionEvent e) {
+		log.info(""+ e.paramString() );
+		if(e.getActionCommand().equals("connect")) {
+			log.info("premuto connect");
+			try {
+				s = new Socket("localhost", 4000);
+				g.connected();
+				
+			} catch (UnknownHostException e1) {
+				g.init();
+				log.warning(e1.getMessage());
+			} catch (IOException e1) {
+				g.init();
+				log.warning(e1.getMessage());
+			}
+		}
+		if(e.getActionCommand().equals("login")) {
+			log.info("premuto login");
+			try {
+				scrivi = new PrintWriter(s.getOutputStream());
+				scrivi.println("USERNAME:" + g.getUsername());
+				scrivi.flush();
+				r = new Runner(this, g);
+				t = new Thread(r);
+				t.start();
+			} catch (IOException e1) {
+				log.warning(e1.getMessage());
+			}
+		}
+		if(e.getActionCommand().equals("logout")) {
+			scrivi.println("LOGOUT");
+			scrivi.flush();
+			log.info("logged out");
+			g.connected();
+			
+		}
+		if(e.getActionCommand().equals("plus")) {
+			log.info("premuto plus");
+			scrivi.println("PLUS:1");
+			scrivi.flush();
+		}
+		if(e.getActionCommand().equals("minus")) {
+			log.info("premuto minus");
+			scrivi.println("MINUS:1");
+			scrivi.flush();
+		}
+		if (e.getActionCommand().equals("back")) {
+			log.info("premuto back");
+			g.logged();
+		}
+		if(e.getActionCommand().equals("search")) {
+			log.info("premuto search");
+			log.info(e.getSource().toString());
+			if(e.getSource().getClass().equals(JTextField.class)) {
+				cercato = g.getMainPage().getVisitaUsername();
+			}
+			else {
+				cercato = e.getSource().toString().split(",")[25].split("=")[1];
+			}
+			if(cercato != null && cercato != "") {
+				scrivi.println("SEARCH:"+cercato);
+				scrivi.flush();
+			}
+			
+		}
+		//TODO scrivere i blocchi dei menu
+		//non funziona perche non ho la piu pallida idea di come si creino menu a scomparsa
+		if(e.getActionCommand().equals("menu")) {
+			if(g.main.isOpen()) {
+				g.main.openMenu();
+			}
+			else {
+				g.main.closeMenu();
+			}
+		}
+		if(e.getActionCommand().contains("amicizia:")) {
+			log.info("premuto amicizia ");
+			//in teoria funziona perche si puo cliccare richiedi amicizia solo se si è 
+			///sulla pagina visita quindi cercato è necessariamente inizializzato
+			scrivi.println("AMICIZIA:" + cercato);
+			scrivi.flush();
+		}
+		if(e.getActionCommand().equals("notify")) {
+			
+		}
+	}
+
+	private int counter = 0; //conta quante volte tenta la connessione
+	public void tryConnect() {
+		try {
+			s = new Socket("localhost", 4000);
+			log.info("connesso");
+			counter = 0; //reset counter
+			g.connected();
+			
+		}
+		catch(IOException e) {
+			log.info("non connesso");
+			counter++;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			if(counter >= 20) {
+				log.severe("connessione fallita");
+			}
+			else {
+				tryConnect();
+			}
+		}
+	}
+
+}

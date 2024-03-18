@@ -30,7 +30,7 @@ public class FileManager {
 				s = data.nextLine();
 				String[] str = s.split(":");
 				if(str[0].equals(username)) {
-					if(str.length == 4) {
+					if(str.length == 5) {
 						user = new User(username, Integer.parseInt(str[1]), Integer.parseInt(str[2]), Integer.parseInt(str[3]), str[4]);
 					}
 					else {

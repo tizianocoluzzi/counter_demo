@@ -1,0 +1,17 @@
+package Notifiche;
+
+public class NotificaAmicizia extends Notifica{
+
+	public NotificaAmicizia(String mittente, String data) {
+		super(mittente, data);
+		testo = mittente + " vuole fare amicizia ";
+	}
+	@Override
+	public boolean equals(Object o) {
+		if(o.getClass().equals(this.getClass())) {
+			Notifica c = (Notifica) o;
+			return c.getMittente() == mittente;
+		}
+		return false;
+	}
+}

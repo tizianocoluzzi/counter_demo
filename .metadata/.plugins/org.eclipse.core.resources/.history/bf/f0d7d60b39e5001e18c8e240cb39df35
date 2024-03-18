@@ -1,0 +1,15 @@
+package Notifiche;
+
+public abstract class Notifica {
+	protected String testo;
+	private String mittente;
+	private LocalDate data;
+	public Notifica(String mittente, String data) {
+		this.mittente = mittente;
+		this.data = LocalData.parse(data);
+	}
+	public String getTesto() {
+		return testo;
+	}
+	
+}

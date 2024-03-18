@@ -1,0 +1,224 @@
+package Gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+public class MainPage extends JFrame {
+	//listener
+	private Listener l;
+	//pannello nord
+	private JPanel north;
+	private JTextField search;
+	private JButton menu;
+	private JButton notify;
+	//pannello center
+	private JPanel center;
+	private JButton plus;
+	private JButton minus;
+	private JTextField count;
+	//pannello south
+	private JPanel south;
+	private JLabel current;
+	private JLabel max;
+	private JTextField fmax;
+	private JTextField fcurrent;
+	//panello menu(west)
+	private JPanel menuPanel;
+	private JLabel menuLabel;
+	private JLabel usernameLabel;
+	private boolean open;
+	//TODO da aggiungere tutta sta roba
+	private JPanel friendsPanel;
+	private JScrollPane scrollFriends;
+	private JButton[] friendList;
+	private String[] friendNames;
+	
+	private AmiciziaPanel[] amiciziaPanels;
+	private CountAmiciPanel[] countAmiciPanels;
+	private JPanel notifyPanel;
+	private JPanel mainPanel;
+	public MainPage(Listener l) {
+		open = true;
+		plus = new JButton("+");
+		minus = new JButton("-");
+		count = new JTextField(5);
+		count.setEditable(false);
+		center = new JPanel();
+		center.setLayout(new FlowLayout());
+		search = new JTextField(15);
+		search.setName("search");
+		usernameLabel = new JLabel();
+		menuLabel = new JLabel("menu:");
+		south = new JPanel();
+		current = new JLabel("current");
+		max = new JLabel("max");
+		fmax = new JTextField(2);
+		fmax.setEnabled(false);
+		fcurrent = new JTextField(2);
+		fcurrent.setEnabled(false);
+		notify = new JButton("n");
+		menu = new JButton("m");
+		
+		notifyPanel = new JPanel();
+		notifyPanel.setLayout(new BoxLayout(notifyPanel, BoxLayout.Y_AXIS));
+		
+		menuPanel = new JPanel();
+		friendsPanel = new JPanel();
+		scrollFriends = new JScrollPane(friendsPanel);
+		menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		
+		center.add(minus);
+		center.add(count);
+		center.add(plus);
+		north = new JPanel();
+		north.setLayout(new FlowLayout());
+		//north.add(lusername);
+		//north.add(username);
+		//north.add(connect);
+		//north.add(login);
+		//north.add(disconnect);
+		north.add(menu);
+		north.add(search);
+		north.add(notify);
+		
+		south.add(current);
+		south.add(fcurrent);
+		south.add(max);
+		south.add(fmax);
+		
+		menuPanel.add(menuLabel);
+		menuPanel.add(usernameLabel);
+		menuPanel.add(scrollFriends);
+		
+		this.init();
+		this.setSize(900, 400);
+		mainPanel.add(north, BorderLayout.NORTH);
+		mainPanel.add(center ,BorderLayout.CENTER);
+		mainPanel.add(south, BorderLayout.SOUTH);
+		mainPanel.add(menuPanel, BorderLayout.WEST);
+		mainPanel.add(notifyPanel, BorderLayout.EAST);
+		//this.pack();
+		this.add(mainPanel);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//this.setVisible(true);
+		
+		this.l = l;
+		plus.setActionCommand("plus");
+		minus.setActionCommand("minus");
+		plus.addActionListener(l);
+		minus.addActionListener(l);
+		search.setActionCommand("search");
+		search.addActionListener(l);
+		notify.setActionCommand("notify");
+		menu.setActionCommand("menu");
+		notify.addActionListener(l);
+		menu.addActionListener(l);
+		
+	}
+	public void init() {
+		plus.setEnabled(false);
+		minus.setEnabled(false);
+		count.setForeground(Color.gray);
+		search.setEnabled(false);
+	}
+	public void connected() {
+		plus.setEnabled(false);
+		minus.setEnabled(false);
+		count.setForeground(Color.gray);
+		search.setEnabled(false);
+	}
+	public void logged() {
+		plus.setEnabled(true);
+		minus.setEnabled(true);
+		count.setForeground(Color.black);
+		search.setEnabled(true);
+	}
+	public void zero_state() {
+		plus.setEnabled(true);
+		minus.setEnabled(false);
+		count.setForeground(Color.black);
+		search.setEnabled(false);
+	}
+	
+	public void setCount(String a) {
+		count.setText(a);
+	}
+	public String getVisitaUsername() {
+		return search.getText();
+	}
+	public void openMenu() {
+		menuPanel.setVisible(true);
+		open = true;
+	}
+	public void closeMenu() {
+		menuPanel.setVisible(false);
+		open = false;
+	}
+	public boolean isOpen() {
+		return open;
+	}
+	public void setUsername(String u) {
+		usernameLabel.setText(u);
+	}
+	public void setActual(String a) {
+		fcurrent.setText(a);
+	}
+	public void setMax(String a) {
+		fmax.setText(a);
+	}
+	//non devo farlo qui ma direttamente nel listener perche della comunicazione non se ne occupa la GUI
+	public void setFriendsNames(String friends) {
+		friendNames = friends.split("|");
+	}
+	
+	public void createButtonFriends(String[] names) {
+		friendNames = names;
+		friendList = new JButton[friendNames.length];
+		for(int i = 0; i < friendNames.length; i++) {
+			if(friendNames[i] != "") {
+				friendList[i] = new JButton(friendNames[i]);
+				friendList[i].addActionListener(l);
+				friendList[i].setActionCommand("search");
+				friendsPanel.add(friendList[i]);
+			}
+		}
+	}
+	
+	//la struttura utilizzata è quella dell'array ma mi costringe a dover richiamare ogni volta 
+	//la costruzione il che è poco efficiente, sarebbe probbabilmente piu adatta una struttura
+	//tipo linkdeList
+	public void createNotificationPanel(String notification) {
+		System.out.println(notification);
+		String[] na = notification.split("/");
+		String[] notificheAmicizia = na[0].split("$");
+		//pannello amicizia
+		amiciziaPanels = new AmiciziaPanel[notificheAmicizia.length];
+		for(int i = 0; i < notificheAmicizia.length; i++) {
+			System.out.println("entrato");
+			amiciziaPanels[i] = new AmiciziaPanel(notificheAmicizia[i].split(".")[0]);
+			if(amiciziaPanels[i] == null) System.out.println("null");
+			notifyPanel.add(amiciziaPanels[i]);
+		}
+		//count amici
+		String[] notificheCount = na[1].split("$");
+		countAmiciPanels = new CountAmiciPanel[notificheCount.length];
+		for(int i = 0; i < notificheCount.length; i++) {
+			countAmiciPanels[i] = new CountAmiciPanel(notificheCount[i].split(".")[0]);
+			notifyPanel.add(countAmiciPanels[i]);
+		}
+		
+	}
+}
+

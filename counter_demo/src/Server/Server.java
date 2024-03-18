@@ -79,6 +79,7 @@ class Run implements Runnable{
 				else if(msg[0].equals("SEARCH")) {
 					log.info("ricevuto search");
 					User cercato = findUser(msg[1]);
+					if(cercato == null) continue;
 					log.info("utente cercato: " + msg[1] + cercato.toString());
 					scrivi.println("SEARCH:" + cercato.toString());
 					scrivi.flush();

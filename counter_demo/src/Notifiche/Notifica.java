@@ -24,5 +24,4 @@ public abstract class Notifica {
 	public String getData() {
 		return data.toString();
 	}
-	
 }

@@ -85,4 +85,8 @@ public class Gui{
 	public void setFriendsNames(String[] friendsList) {
 		main.createButtonFriends(friendsList);
 	}
+	public void setNotification(String n) {
+		System.out.println("chiamata setNotification");
+		main.createNotificationPanel(n);
+	}
 }

@@ -13,10 +13,12 @@ public class Counter {
 		this.actScore = actScore;
 		this.maxScore = maxScore;
 		if(lastCount == "") {
+			System.out.println("data non trovata");
 			this.lastCount = LocalDate.now();
 		}
 		else {
-			this.lastCount = LocalDate.parse(lastCount);
+			System.out.println(lastCount);
+			this.lastCount = LocalDate.parse(lastCount, DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
 		}
 		
 	}

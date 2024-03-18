@@ -29,5 +29,4 @@ public class AmiciziaPanel extends JPanel{
 		this.add(buttons);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
-
 }

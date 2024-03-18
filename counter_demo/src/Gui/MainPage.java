@@ -68,15 +68,9 @@ public class MainPage extends JFrame {
 		fcurrent.setEnabled(false);
 		notify = new JButton("n");
 		menu = new JButton("m");
-		//creo una prova per il panel di amicizia
-		amiciziaPanels = new AmiciziaPanel[1];
-		amiciziaPanels[0] = new AmiciziaPanel("prova");	
-		countAmiciPanels = new CountAmiciPanel[1];
-		countAmiciPanels[0] = new CountAmiciPanel("prova");	
+		
 		notifyPanel = new JPanel();
 		notifyPanel.setLayout(new BoxLayout(notifyPanel, BoxLayout.Y_AXIS));
-		notifyPanel.add(amiciziaPanels[0]);
-		notifyPanel.add(countAmiciPanels[0]);
 		
 		menuPanel = new JPanel();
 		friendsPanel = new JPanel();
@@ -200,6 +194,31 @@ public class MainPage extends JFrame {
 				friendsPanel.add(friendList[i]);
 			}
 		}
+	}
+	
+	//la struttura utilizzata è quella dell'array ma mi costringe a dover richiamare ogni volta 
+	//la costruzione il che è poco efficiente, sarebbe probbabilmente piu adatta una struttura
+	//tipo linkdeList
+	public void createNotificationPanel(String notification) {
+		System.out.println(notification);
+		String[] na = notification.split("/");
+		String[] notificheAmicizia = na[0].split("$");
+		//pannello amicizia
+		amiciziaPanels = new AmiciziaPanel[notificheAmicizia.length];
+		for(int i = 0; i < notificheAmicizia.length; i++) {
+			String[] app = notificheAmicizia[i].split("\\.");
+			amiciziaPanels[i] = new AmiciziaPanel(app[0]);
+			notifyPanel.add(amiciziaPanels[i]);
+		}
+		
+		//count amici
+		String[] notificheCount = na[1].split("$");
+		countAmiciPanels = new CountAmiciPanel[notificheCount.length];
+		for(int i = 0; i < notificheCount.length; i++) {
+			countAmiciPanels[i] = new CountAmiciPanel(notificheCount[i].split("\\.")[0]);
+			notifyPanel.add(countAmiciPanels[i]);
+		}
+		
 	}
 }
 

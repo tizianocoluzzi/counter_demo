@@ -43,6 +43,14 @@ class Runner implements Runnable{
 					}catch(ArrayIndexOutOfBoundsException e2) {
 						//non fa nulla perche non ci sono amici
 					}
+					try {
+						log.info("aggiungo le notifiche: " + msg[7]);
+						g.setNotification(msg[7]);
+					}
+					catch(ArrayIndexOutOfBoundsException e){
+						log.info("non ci sono notifiche");
+						//non fa nulla perche semplicemente non ci sono notifiche
+					}
 					
 					if(msg[2].equals("0")) {
 						g.zero_state();
