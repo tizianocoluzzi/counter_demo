@@ -1,12 +1,12 @@
 la struttura è annidata, quindi
 user format:
-username:actual_count:actual_score:max_score:last_count:amico1-amico2-etc:notifiche_am:notifiche_count
+username:actual_count:actual_score:max_score:last_count:amico1-amico2-etc:notifiche_am/notifiche_count
 
 last_count format:
 gg-mes-ann
 
 notifiche_am format:
-mitt-data
+mitt1.data1$mitt2.data$...
 
 notifiche_count format:
-mitt-data
+mitt1.data1$mitt2.data2$...

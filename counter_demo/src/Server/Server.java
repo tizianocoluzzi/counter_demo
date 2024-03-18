@@ -83,6 +83,12 @@ class Run implements Runnable{
 					scrivi.println("SEARCH:" + cercato.toString());
 					scrivi.flush();
 				}
+				else if(msg[0].equals("AMICIZIA")) {
+					log.info("ricevuto amicizia " + msg[1]);
+					User cercato = findUser(msg[1]);
+					cercato.addNotificaAmicizia(user.getUsername());
+					editUser(cercato); //faccio in modo che si aggiorni il file nel database
+				}
 				
 				else {
 					log.info("errore");

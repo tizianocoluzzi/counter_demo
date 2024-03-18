@@ -42,6 +42,12 @@ public class FileManager {
 					}catch(IndexOutOfBoundsException e) {
 						user.setFriends("");
 					}
+					try {
+						log.info("aggiungo le notifiche");
+						user.setNotifiche(str[6]);
+					}
+					catch(IndexOutOfBoundsException e) {
+					}
 				}
 			}
 			data.close();
@@ -73,7 +79,8 @@ public class FileManager {
 			String tot = "";
 			while(fr.hasNextLine()) {
 				str = fr.nextLine();
-				if(str.contains(user.getUsername())){
+				String username = str.split(":")[0];
+				if(username.contains(user.getUsername())){
 					str = user.toString();
 				}
 				tot = tot + str + "\n";

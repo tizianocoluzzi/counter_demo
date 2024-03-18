@@ -41,6 +41,7 @@ public class Visita extends JFrame{
 		//center.setLayout(new BorderLayout());
 		premuto = false;
 		amicizia = new JButton("richiedi_amicizia");
+		amicizia.setActionCommand("amicizia:");
 		
 		north.add(back);
 		north.add(username);
@@ -60,6 +61,7 @@ public class Visita extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		back.addActionListener(l);
+		amicizia.addActionListener(l);
 	}
 	public void visita(String u, String c, String act, String m) {
 		username.setText(u);

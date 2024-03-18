@@ -1,5 +1,8 @@
 package Utente;
 
+import java.time.LocalDate;
+import java.util.LinkedList;
+
 import Counter.Counter;
 //in realta non sto usando il tipo notifica perche sembra inutile
 import Notifiche.Notifica;
@@ -7,6 +10,7 @@ import Notifiche.NotificaAmicizia;
 import Notifiche.NotificaCount;
 
 public class User {
+	private LinkedList<Notifica> notifiche;
 	private String notificheAmicizia;
 	private String notificheCount;
 	private String friends;
@@ -16,6 +20,9 @@ public class User {
 		this.username = username;
 		this.counter = new Counter(count, actScore, maxScore, lastCount);
 		friends = "";
+		notifiche = new LinkedList<Notifica>();
+		notificheAmicizia = "";
+		notificheCount = "";
 	}
 	public User(String username, int count, int actScore, int maxScore) {
 		this(username, count, actScore, maxScore, "");
@@ -55,8 +62,44 @@ public class User {
 		this.friends = friends;
 	}
 	public String getNotifiche() {
-		return notificheAmicizia+notificheCount;
+		return notificheAmicizia + "/" + notificheCount;
 	}
-	
+	public void setNotifiche(String n) {
+		notificheAmicizia = n.split("/")[0];
+		notificheCount = n.split("/")[1];
+		String[] a = notificheAmicizia.split("$");
+		String[] c = notificheCount.split("$");
+		for(int i = 0; i < a.length; i++) {
+			NotificaAmicizia r = new NotificaAmicizia(a[i].split(".")[0], a[i].split(".")[1]);
+			if(r != null)
+				notifiche.add(r);
+		}
+		for(int i = 0; i < c.length; i++) {
+			NotificaCount r = new NotificaCount(c[i].split(".")[0], c[i].split(".")[1]);
+			if(r != null)
+				notifiche.add(r);
+		}
+	}
+	//TODO migliorare il meccanismo di controllo per evitare che ci sia sempre la stessa notifica
+	public void addNotificaAmicizia(String mitt) {
+		NotificaAmicizia n = new NotificaAmicizia(mitt, LocalDate.now().toString());
+		if(notifiche.contains(n)) {return;}
+		notifiche.add(n);
+		if(notificheAmicizia == "") {
+			notificheAmicizia = n.toString();
+			return;
+		}
+		notificheAmicizia = notificheAmicizia + "$" + n.toString();
+	}
+	public void addNotificaCount(String mitt) {
+		NotificaCount n = new NotificaCount(mitt, LocalDate.now().toString());
+		if(notifiche.contains(n)) {return;}
+		notifiche.add(n);
+		if(notificheCount == "") {
+			notificheCount = n.toString();
+			return;
+		}
+		notificheCount = notificheCount + "$" + n.toString();
+	}
 	
 }

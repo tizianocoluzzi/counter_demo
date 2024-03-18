@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-//TODO probabilmente meglio scrivere la gui in frammenti in modo da avere un codice meglio organizzato
 public class MainPage extends JFrame {
 	//listener
 	private Listener l;

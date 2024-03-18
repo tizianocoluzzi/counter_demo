@@ -41,6 +41,7 @@ class Runner implements Runnable{
 					try {
 						g.setFriendsNames(msg[6].split("-"));
 					}catch(ArrayIndexOutOfBoundsException e2) {
+						//non fa nulla perche non ci sono amici
 					}
 					
 					if(msg[2].equals("0")) {
@@ -65,6 +66,7 @@ class Runner implements Runnable{
 }
 
 public class Listener implements ActionListener{
+	String cercato;
 	Gui g;
 	Socket s;
 	Logger log;
@@ -131,18 +133,19 @@ public class Listener implements ActionListener{
 			log.info("premuto search");
 			log.info(e.getSource().toString());
 			if(e.getSource().getClass().equals(JTextField.class)) {
-				scrivi.println("SEARCH:"+g.getMainPage().getVisitaUsername());
-				scrivi.flush();
+				cercato = g.getMainPage().getVisitaUsername();
 			}
 			else {
-				String username = e.getSource().toString().split(",")[25].split("=")[1];
-				if(username != "") {
-				scrivi.println("SEARCH:"+username);
-				scrivi.flush();}
+				cercato = e.getSource().toString().split(",")[25].split("=")[1];
+			}
+			if(cercato != null && cercato != "") {
+				scrivi.println("SEARCH:"+cercato);
+				scrivi.flush();
 			}
 			
 		}
 		//TODO scrivere i blocchi dei menu
+		//non funziona perche non ho la piu pallida idea di come si creino menu a scomparsa
 		if(e.getActionCommand().equals("menu")) {
 			if(g.main.isOpen()) {
 				g.main.openMenu();
@@ -150,6 +153,13 @@ public class Listener implements ActionListener{
 			else {
 				g.main.closeMenu();
 			}
+		}
+		if(e.getActionCommand().contains("amicizia:")) {
+			log.info("premuto amicizia ");
+			//in teoria funziona perche si puo cliccare richiedi amicizia solo se si è 
+			///sulla pagina visita quindi cercato è necessariamente inizializzato
+			scrivi.println("AMICIZIA:" + cercato);
+			scrivi.flush();
 		}
 		if(e.getActionCommand().equals("notify")) {
 			
